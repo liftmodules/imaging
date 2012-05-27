@@ -21,7 +21,7 @@ package imaging
 import org.specs.Specification
 
 
-object ImageResizerSpec extends Specification  {
+class ImageResizerSpec extends Specification  {
   
   "ImageResizer scaledMaxDim function" should {
     "be invariant" in {
