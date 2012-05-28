@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.liftweb
+package net.liftmodules
 package imaging
 
 
@@ -28,6 +28,7 @@ import org.apache.sanselan.ImageFormat
 import org.apache.sanselan.formats.jpeg.JpegImageMetadata
 import org.apache.sanselan.formats.tiff.constants.TiffTagConstants
 
+import net.liftweb._
 import common.{Box, Full, Empty}
 import util.Helpers
 

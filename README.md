@@ -5,7 +5,7 @@ This module provides image-related utilities.
 
 ---
 
-
+**Note:** The module package changed from `net.liftweb.imaging` to `net.liftmodules.imaging` in May 2012.  Please consider this when referencing documentation written before that date.
 
 
 ---
