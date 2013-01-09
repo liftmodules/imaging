@@ -26,7 +26,6 @@ libraryDependencies <++= scalaVersion { sv =>
    (sv match { 
 	 case "2.9.2" | "2.9.1" | "2.9.1-1" => "org.specs2" %% "specs2" % "1.12.3" % "test"
 	 case "2.10.0" => "org.specs2" %% "specs2" % "1.13" % "test"
-	 case "2.9.0-1" | "2.9.0" => "org.specs2" %% "specs2" % "1.7.1" % "test"
       })  :: 
   Nil
 }
