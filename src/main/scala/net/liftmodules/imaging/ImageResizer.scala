@@ -21,6 +21,7 @@ package imaging
 import java.io.{InputStream,ByteArrayOutputStream,ByteArrayInputStream}
 import java.awt.{Graphics2D, Transparency, RenderingHints}
 import java.awt.image.BufferedImage
+import java.awt.Color
 import javax.imageio.{IIOImage, ImageIO, ImageWriteParam}
 
 import org.apache.sanselan.Sanselan
@@ -92,6 +93,25 @@ class ImageResizer(renderingHintsMap:Map[java.awt.RenderingHints.Key,Any], multi
   
   def imageToStream(format:ImageOutFormat.Value, image:BufferedImage):InputStream = {
     new ByteArrayInputStream(imageToBytes(format, image, 0.8f))
+  }
+  
+  /**
+   * fix color by replce transparent color by backgroundColor, fix for png image
+   * @param metaImage
+   * @param backgroundColor
+   * @return
+   */
+  def fixImageTransparency(metaImage: ImageWithMetaData, backgroundColor: Color = Color.WHITE): ImageWithMetaData = {
+    metaImage.format match {
+      case ImageOutFormat.png => {
+        val b = new BufferedImage(metaImage.image.getWidth, metaImage.image.getHeight, BufferedImage.TYPE_INT_RGB)
+        val g = b.createGraphics()
+        g.drawImage(metaImage.image, 0, 0, b.getWidth, b.getHeight, backgroundColor, null)
+        g.dispose()
+        ImageWithMetaData(b, metaImage.orientation, metaImage.format)
+      }
+      case _ => metaImage
+    }
   }
   
   def imageToBytes(format: ImageOutFormat.Value, image: BufferedImage, jpegQuality: Float):Array[Byte] = {
