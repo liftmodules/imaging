@@ -32,6 +32,10 @@ add dependency in your build.sbt
 ### Resize and rotate image
 
 	val img = ImageResizer.max(metaImage.orientation, metaImage.image, 800, 600)
+	
+### Warning JPEG codec
+
+OpenJDK does not have a native JPEG encoder, try using Sun's JDK, or using an external library like JAI.
 
 ## Notes for module developers
 
