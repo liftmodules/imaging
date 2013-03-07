@@ -25,9 +25,9 @@ add dependency in your build.sbt
 
 	var metaImage = ImageResizer.getImageFromStream(fph.fileStream)
 
-### Fix Transparency from PNG
+### Remove alpha channel (Fix Transparency from PNG)
 
-	var metaImage = ImageDb.fixImageTransparency(metaImage)
+	var metaImage = ImageResizer.removeAlphaChannel(metaImage)
 
 ### Resize and rotate image
 

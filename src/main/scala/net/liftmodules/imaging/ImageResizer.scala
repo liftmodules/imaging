@@ -96,12 +96,13 @@ class ImageResizer(renderingHintsMap:Map[java.awt.RenderingHints.Key,Any], multi
   }
   
   /**
-   * fix color by replce transparent color by backgroundColor, fix for png image
+   * Remove alpha channel 
+   * fix color error by replace transparent color by backgroundColor, fix for png image export
    * @param metaImage
    * @param backgroundColor
    * @return
    */
-  def fixImageTransparency(metaImage: ImageWithMetaData, backgroundColor: Color = Color.WHITE): ImageWithMetaData = {
+  def removeAlphaChannel(metaImage: ImageWithMetaData, backgroundColor: Color = Color.WHITE): ImageWithMetaData = {
     metaImage.format match {
       case ImageOutFormat.png => {
         val b = new BufferedImage(metaImage.image.getWidth, metaImage.image.getHeight, BufferedImage.TYPE_INT_RGB)
