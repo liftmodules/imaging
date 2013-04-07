@@ -1,13 +1,17 @@
 name := "imaging"
 
+organization := "net.liftmodules"
+
+version := "1.2-SNAPSHOT"
+
 liftVersion <<= liftVersion ?? "2.5-SNAPSHOT"
 
-version <<= liftVersion apply { _ + "-1.2-SNAPSHOT" }
+liftEdition <<= liftVersion apply { _.substring(0,3) }
 
-organization := "net.liftmodules"
- 
+name <<= (name, liftEdition) { (n, e) =>  n + "_" + e }
+
 scalaVersion := "2.10.0"
- 
+
 crossScalaVersions := Seq("2.10.0", "2.9.2", "2.9.1-1", "2.9.1")
 
 resolvers += "CB Central Mirror" at "http://repo.cloudbees.com/content/groups/public"
@@ -15,18 +19,17 @@ resolvers += "CB Central Mirror" at "http://repo.cloudbees.com/content/groups/pu
 resolvers += "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
 
 libraryDependencies <++= liftVersion { v =>
-  "net.liftweb" %% "lift-webkit" % v % "compile->default" ::
-  "net.liftweb" %% "lift-util" % v % "compile->default" ::
+  "net.liftweb" %% "lift-webkit" % v % "provided" ::
+  "net.liftweb" %% "lift-util" % v % "provided" ::
   Nil
-}    
+}
 
-
-libraryDependencies <++= scalaVersion { sv => 
+libraryDependencies <++= scalaVersion { sv =>
   "org.apache.sanselan" % "sanselan" % "0.97-incubator" ::
-   (sv match { 
+   (sv match {
 	 case "2.9.2" | "2.9.1" | "2.9.1-1" => "org.specs2" %% "specs2" % "1.12.3" % "test"
 	 case "2.10.0" => "org.specs2" %% "specs2" % "1.13" % "test"
-      })  :: 
+      })  ::
   Nil
 }
 
@@ -35,7 +38,7 @@ publishTo <<= version { _.endsWith("SNAPSHOT") match {
  	case true  => Some("snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
  	case false => Some("releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
   }
- } 
+ }
 
 
 // For local deployment:
@@ -72,6 +75,6 @@ pomExtra := (
 	      <name>Lift Team</name>
 	      <url>http://www.liftmodules.net</url>
 	 	</developer>
-	 </developers> 
+	 </developers>
  )
-  
+
