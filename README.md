@@ -2,11 +2,17 @@
 
 This module provides image-related utilities.
 
+## Installation
+
 To include this module in your Lift project, update your `libraryDependencies` in `build.sbt` to include:
 
 *Lift 2.5.x* for Scala 2.9 and 2.10:
 
     "net.liftmodules" %% "imaging_2.5" % "1.3-SNAPSHOT"
+
+*Lift 2.6.x*:
+
+    "net.liftmodules" %% "imaging_2.6" % "1.3-SNAPSHOT"
 
 *Lift 3.0.x* for Scala 2.10:
 
@@ -14,15 +20,8 @@ To include this module in your Lift project, update your `libraryDependencies` i
 
 **Note:** The module package changed from `net.liftweb.imaging` to `net.liftmodules.imaging` in May 2012.  Please consider this when referencing documentation written before that date.
 
-## Installation
-
 Version list can be found at [Maven Repository](http://repo1.maven.org/maven2/net/liftmodules/)
 
-### SBT
-
-add dependency in your build.sbt
-
-         "net.liftmodules"   %% "imaging"   % (liftVersion + "-1.3")    % "compile->default"
 
 ## Usage
 
