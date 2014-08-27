@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2013 WorldWide Conferencing, LLC
+ * Copyright 2010-2014 WorldWide Conferencing, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,25 @@
 package net.liftmodules
 package imaging
 
+import org.specs2.execute.Result
 import org.specs2.mutable._
 
-
 class ImageResizerSpec extends Specification  {
-  
+
   "ImageResizer scaledMaxDim function" should {
     "be invariant" in {
-      val range  = (1 to 10)
-      for {w <- range
-           h <- range
-           maxW <- range
-           maxH <- range}{
-        val (scaledWidth, scaledHeight) = ImageResizer.scaledMaxDim(w,h, maxW,maxH)
-        
-        (scaledWidth) must beLessThanOrEqualTo(maxW)
-        (scaledHeight) must beLessThanOrEqualTo(maxH)
-        (scaledWidth == maxW || scaledHeight == maxH) must beTrue
+      Result.unit {
+        val range  = (1 to 10)
+        for {w <- range
+             h <- range
+             maxW <- range
+             maxH <- range} {
+          val (scaledWidth, scaledHeight) = ImageResizer.scaledMaxDim(w,h, maxW,maxH)
+          (scaledWidth) must beLessThanOrEqualTo(maxW)
+          (scaledHeight) must beLessThanOrEqualTo(maxH)
+          (scaledWidth == maxW || scaledHeight == maxH) must beTrue
+        }
       }
     }
-  } 
+  }
 }
