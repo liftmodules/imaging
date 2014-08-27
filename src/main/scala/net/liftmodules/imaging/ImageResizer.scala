@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2013 WorldWide Conferencing, LLC
+ * Copyright 2010-2014 WorldWide Conferencing, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import common.{Box, Full, Empty}
 import util.Helpers
 
 
-object ImageOutFormat extends Enumeration("png", "jpg", "gif", "bmp"){
+object ImageOutFormat extends Enumeration{
   val png,jpeg,gif,bmp = Value
 }
 
@@ -42,16 +42,16 @@ object ImageOutFormat extends Enumeration("png", "jpg", "gif", "bmp"){
 object ImageOrientation extends Enumeration(1) {
   val ok = Value(1, "OK")
   val mirrored = Value(2, "Mirror")
-  
+
   val rotate180 = Value(3, "Rotate 180")
   val rotate180mirror = Value(4, "Rotate 180 Mirror")
-  
+
   val rotate270mirror = Value(5, "Rotate 270 Mirror")
   val rotate270 = Value(6, "Rotate 270")
-  
+
   val rotate90mirror = Value(7, "Rotate 90 Mirror")
   val rotate90 = Value(8, "Rotate 90")
-  
+
   def valueOf(v: Int):Box[Value] = {
     if (v > 0 && v <= 8) Full(apply(v)) else Empty
   }
@@ -62,22 +62,22 @@ case class ImageWithMetaData(image:BufferedImage, orientation:Box[ImageOrientati
 object ImageResizer extends ImageResizer(Map(RenderingHints.KEY_INTERPOLATION -> RenderingHints.VALUE_INTERPOLATION_BILINEAR), true)
 
 class ImageResizer(renderingHintsMap:Map[java.awt.RenderingHints.Key,Any], multiStepDownScale:Boolean) {
-  
+
   val renderingHints = {
-    val h = new RenderingHints(null) 
+    val h = new RenderingHints(null)
     renderingHintsMap.foreach(p => h.put(p._1, p._2))
     h
   }
 
   def getOrientation(imageBytes:Array[Byte]):Box[ImageOrientation.Value] = Helpers.tryo {
     Sanselan.getMetadata(imageBytes) match {
-      case metaJpg:JpegImageMetadata => 
+      case metaJpg:JpegImageMetadata =>
         val exifValue = metaJpg.findEXIFValue(TiffTagConstants.TIFF_TAG_ORIENTATION)
         if (exifValue != null) ImageOrientation.valueOf(exifValue.getIntValue) else Empty
       case _ => Empty
     }
   }.flatMap(x=>x)
-  
+
   def getImageFromStream(is:java.io.InputStream):ImageWithMetaData = {
     val imageBytes = Helpers.readWholeStream(is)
     val orientation = getOrientation(imageBytes)
@@ -90,13 +90,13 @@ class ImageResizer(renderingHintsMap:Map[java.awt.RenderingHints.Key,Any], multi
     }
     ImageWithMetaData(ImageIO.read(new java.io.ByteArrayInputStream(imageBytes)), orientation, format)
   }
-  
+
   def imageToStream(format:ImageOutFormat.Value, image:BufferedImage):InputStream = {
     new ByteArrayInputStream(imageToBytes(format, image, 0.8f))
   }
-  
+
   /**
-   * Remove alpha channel 
+   * Remove alpha channel
    * fix color error by replace transparent color by backgroundColor, fix for png image export
    * @param metaImage
    * @param backgroundColor
@@ -114,7 +114,7 @@ class ImageResizer(renderingHintsMap:Map[java.awt.RenderingHints.Key,Any], multi
       case _ => metaImage
     }
   }
-  
+
   def imageToBytes(format: ImageOutFormat.Value, image: BufferedImage, jpegQuality: Float):Array[Byte] = {
     val outputStream = new ByteArrayOutputStream()
     format match {
@@ -131,7 +131,7 @@ class ImageResizer(renderingHintsMap:Map[java.awt.RenderingHints.Key,Any], multi
     }
     outputStream.toByteArray()
   }
-  
+
   /**
    * Resize to a square
    * Will preserve the aspect ratio of the original and than center crop the larger dimension.
@@ -143,7 +143,7 @@ class ImageResizer(renderingHintsMap:Map[java.awt.RenderingHints.Key,Any], multi
       val height = originalImage.getHeight
       val width = originalImage.getWidth
       val ratio:Double = width.doubleValue/height
-      
+
       //set smaller dimension to the max
       val (scaledWidth, scaledHeight) = if (width < height) {
         (max,(max.doubleValue/ratio).intValue)
@@ -152,16 +152,16 @@ class ImageResizer(renderingHintsMap:Map[java.awt.RenderingHints.Key,Any], multi
       }
       resize(orientation, originalImage, scaledWidth, scaledHeight)
     }
-    
+
     def halfDiff(dim:Int):Int = (dim-max)/2
-    
+
     if (image.getHeight > max) {
       image.getSubimage(0,halfDiff(image.getHeight), image.getWidth, max)
     } else if (image.getWidth > max) {
       image.getSubimage(halfDiff(image.getWidth),0, max, image.getHeight)
     } else image
   }
-  
+
 
   def scaledMaxDim(width:Int, height:Int , maxWidth:Int, maxHeight:Int):(Int,Int) = {
     val ratio:Double = width.doubleValue/height
@@ -169,13 +169,13 @@ class ImageResizer(renderingHintsMap:Map[java.awt.RenderingHints.Key,Any], multi
     val scaleW = (maxWidth, (maxWidth.doubleValue/ratio).intValue)
     val scaleH = ((maxHeight.doubleValue*ratio).intValue,maxHeight)
 
-    if (width > height && scaleW._2 <= maxHeight) 
-      scaleW 
+    if (width > height && scaleW._2 <= maxHeight)
+      scaleW
     else if (scaleH._1 <= maxWidth)
       scaleH
     else scaleW
   }
-  
+
   /**
    * Resize to maximum dimension preserving the aspect ratio.  This is basically equivalent to what you would expect by setting
    * "max-width" and "max-height" CSS attributes but will scale up an image if necessary
@@ -184,7 +184,7 @@ class ImageResizer(renderingHintsMap:Map[java.awt.RenderingHints.Key,Any], multi
     val (scaledWidth, scaledHeight) = scaledMaxDim(originalImage.getWidth, originalImage.getHeight, maxWidth, maxHeight)
     resize(orientation, originalImage, scaledWidth, scaledHeight)
   }
-  
+
   /**
    * Algorithm adapted from example in Filthy Rich Clients http://filthyrichclients.org/
    * Resize an image and account of its orientation.  This will not preserve aspect ratio.
@@ -266,5 +266,5 @@ class ImageResizer(renderingHintsMap:Map[java.awt.RenderingHints.Key,Any], multi
 
     ret
   }
-     
+
 }
