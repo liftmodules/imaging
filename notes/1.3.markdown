@@ -1,0 +1,3 @@
+#scala @liftweb
+
+* First release for Lift 2.6
