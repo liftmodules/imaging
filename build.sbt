@@ -2,9 +2,9 @@ name := "imaging"
 
 organization := "net.liftmodules"
 
-version := "1.3-SNAPSHOT"
+version := "1.4-SNAPSHOT"
 
-liftVersion <<= liftVersion ?? "2.6-RC1"
+liftVersion <<= liftVersion ?? "2.6-SNAPSHOT"
 
 liftEdition <<= liftVersion apply { _.substring(0,3) }
 
