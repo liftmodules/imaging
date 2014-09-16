@@ -2,7 +2,9 @@ name := "imaging"
 
 organization := "net.liftmodules"
 
-version := "1.4-SNAPSHOT"
+homepage := Some(url("https://github.com/liftmodules/imaging"))
+
+version := "1.3"
 
 liftVersion <<= liftVersion ?? "2.6-SNAPSHOT"
 
@@ -71,3 +73,17 @@ pomExtra := (
 	 	</developer>
 	 </developers>
  )
+
+ 
+// Configuration for generating json files for publishing at http://ls.implicit.ly
+seq(lsSettings :_*)
+
+(LsKeys.tags in LsKeys.lsync) := Seq("lift", "images", "liftmodules")
+
+(description in LsKeys.lsync) := "a Lift module for providing image-related utilities."
+
+(LsKeys.ghUser in LsKeys.lsync) := Some("liftmodules")
+
+(LsKeys.ghRepo in LsKeys.lsync) := Some("imaging")
+
+(LsKeys.ghBranch in LsKeys.lsync) := Some("master")
