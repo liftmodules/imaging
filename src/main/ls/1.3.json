@@ -1,0 +1,26 @@
+{
+  "organization" : "net.liftmodules",
+  "name" : "imaging",
+  "version" : "1.3",
+  "description" : "a Lift module for providing image-related utilities.",
+  "site" : "https://github.com/liftmodules/imaging",
+  "tags" : [ "lift", "images", "liftmodules" ],
+  "docs" : "",
+  "resolvers" : [ "https://oss.sonatype.org/content/repositories/releases" ],
+  "dependencies" : [ {
+    "organization" : "net.liftweb",
+    "name" : "lift-webkit",
+    "version" : "2.6-SNAPSHOT"
+  }, {
+    "organization" : "net.liftweb",
+    "name" : "lift-util",
+    "version" : "2.6-SNAPSHOT"
+  }, {
+    "organization" : "org.apache.sanselan",
+    "name" : "sanselan",
+    "version" : "0.97-incubator"
+  } ],
+  "scalas" : [ "2.11.2", "2.10.0" ],
+  "licenses" : [ ],
+  "sbt" : false
+}
