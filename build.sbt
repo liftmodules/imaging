@@ -4,7 +4,7 @@ organization := "net.liftmodules"
 
 homepage := Some(url("https://github.com/liftmodules/imaging"))
 
-version := "1.4-SNAPSHOT"
+version := "1.3"
 
 liftVersion <<= liftVersion ?? "2.6-SNAPSHOT"
 
