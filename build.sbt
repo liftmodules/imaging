@@ -2,7 +2,7 @@ name := "imaging"
 
 organization := "net.liftmodules"
 
-version := "1.3-SNAPSHOT"
+version := "1.4-SNAPSHOT"
 
 liftVersion <<= liftVersion ?? "2.6-SNAPSHOT"
 
@@ -10,9 +10,9 @@ liftEdition <<= liftVersion apply { _.substring(0,3) }
 
 moduleName <<= (name, liftEdition) { (n, e) =>  n + "_" + e }
 
-scalaVersion := "2.10.3"
+scalaVersion := "2.11.2"
 
-crossScalaVersions := Seq("2.10.0", "2.9.2", "2.9.1-1", "2.9.1")
+crossScalaVersions := Seq("2.11.2", "2.10.0")
 
 resolvers += "CB Central Mirror" at "http://repo.cloudbees.com/content/groups/public"
 
@@ -24,15 +24,9 @@ libraryDependencies <++= liftVersion { v =>
   Nil
 }
 
-libraryDependencies <++= scalaVersion { sv =>
-  "org.apache.sanselan" % "sanselan" % "0.97-incubator" ::
-   (sv match {
-	 case "2.9.2" | "2.9.1" | "2.9.1-1" => "org.specs2" %% "specs2" % "1.12.3" % "test"
-	 case _ => "org.specs2" %% "specs2" % "1.13" % "test"
-      })  ::
-  Nil
-}
+libraryDependencies += "org.apache.sanselan" % "sanselan" % "0.97-incubator"
 
+libraryDependencies += "org.specs2" %% "specs2" % "2.4.1" % "test"
 
 publishTo <<= version { _.endsWith("SNAPSHOT") match {
  	case true  => Some("snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
@@ -77,4 +71,3 @@ pomExtra := (
 	 	</developer>
 	 </developers>
  )
-
