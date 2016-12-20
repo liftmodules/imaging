@@ -1,47 +1,42 @@
+import LiftModule.{liftVersion, liftEdition}
+
 name := "imaging"
 
 organization := "net.liftmodules"
 
-version := "1.4-SNAPSHOT"
+version := "1.4.0-SNAPSHOT"
 
-liftVersion <<= liftVersion ?? "2.6-SNAPSHOT"
+liftVersion := "3.0.1"
 
-liftEdition <<= liftVersion apply { _.substring(0,3) }
+liftEdition := (liftVersion apply { _.substring(0,3) }).value
 
-moduleName <<= (name, liftEdition) { (n, e) =>  n + "_" + e }
+moduleName := name.value + "_" + liftEdition.value
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.12.1"
 
-crossScalaVersions := Seq("2.11.2", "2.10.0")
+crossScalaVersions := Seq("2.12.1", "2.11.8")
 
 resolvers += "CB Central Mirror" at "http://repo.cloudbees.com/content/groups/public"
 
 resolvers += "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
 
-libraryDependencies <++= liftVersion { v =>
-  "net.liftweb" %% "lift-webkit" % v % "provided" ::
-  "net.liftweb" %% "lift-util" % v % "provided" ::
-  Nil
-}
+libraryDependencies += "net.liftweb" %% "lift-webkit" % liftVersion.value % "provided"
+libraryDependencies += "net.liftweb" %% "lift-mapper" % liftVersion.value % "provided"
 
 libraryDependencies += "org.apache.sanselan" % "sanselan" % "0.97-incubator"
 
-libraryDependencies += "org.specs2" %% "specs2" % "2.4.1" % "test"
+libraryDependencies += "org.specs2" %% "specs2-core" % "3.8.6" % "test"
 
-publishTo <<= version { _.endsWith("SNAPSHOT") match {
+
+publishTo := (version.value.endsWith("SNAPSHOT") match {
  	case true  => Some("snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
  	case false => Some("releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
-  }
- }
+})
 
-
-// For local deployment:
-
-credentials += Credentials( file("sonatype.credentials") )
-
-// For the build server:
-
-credentials += Credentials( file("/private/liftmodules/sonatype.credentials") )
+credentials ++= (for {
+  username <- Option(System.getenv().get("SONATYPE_USERNAME"))
+  password <- Option(System.getenv().get("SONATYPE_PASSWORD"))
+} yield Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", username, password)).toSeq
 
 publishMavenStyle := true
 
