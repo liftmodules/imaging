@@ -1,5 +1,7 @@
 # Imaging Lift Module
 
+[![Build Status](https://travis-ci.org/liftmodules/imaging.svg?branch=master)](https://travis-ci.org/liftmodules/imaging)
+
 This module provides image-related utilities.
 
 ## Installation
