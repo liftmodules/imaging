@@ -13,9 +13,8 @@ liftEdition := liftVersion.value.replaceAllLiterally("-SNAPSHOT", "").split('.')
 
 moduleName := name.value + "_" + liftEdition.value
 
-scalaVersion := "2.12.1"
-
-crossScalaVersions := Seq("2.12.1", "2.11.8")
+crossScalaVersions := Seq("2.12.2", "2.11.11")
+scalaVersion := crossScalaVersions.value.head
 
 resolvers += "CB Central Mirror" at "http://repo.cloudbees.com/content/groups/public"
 
