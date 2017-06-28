@@ -9,7 +9,7 @@ version := "1.4.0-SNAPSHOT"
 
 liftVersion := "3.0.1"
 
-liftEdition := (liftVersion apply { _.substring(0,3) }).value
+liftEdition := liftVersion.value.replaceAllLiterally("-SNAPSHOT", "").split('.').take(2).mkString(".")
 
 moduleName := name.value + "_" + liftEdition.value
 
