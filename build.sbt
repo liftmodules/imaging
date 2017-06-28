@@ -25,7 +25,7 @@ libraryDependencies += "net.liftweb" %% "lift-mapper" % liftVersion.value % "pro
 
 libraryDependencies += "org.apache.sanselan" % "sanselan" % "0.97-incubator"
 
-libraryDependencies += "org.specs2" %% "specs2-core" % "3.8.6" % "test"
+libraryDependencies += "org.specs2" %% "specs2-core" % "3.9.1" % "test"
 
 
 publishTo := (version.value.endsWith("SNAPSHOT") match {
