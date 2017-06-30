@@ -1,4 +1,5 @@
-import LiftModule.{liftVersion, liftEdition}
+val liftVersion = settingKey[String]("Lift Web Framework full version number")
+val liftEdition = settingKey[String]("Lift Edition (such as 2.6 or 3.0)")
 
 name := "imaging"
 
@@ -8,13 +9,12 @@ version := "1.4.0-SNAPSHOT"
 
 liftVersion := "3.0.1"
 
-liftEdition := (liftVersion apply { _.substring(0,3) }).value
+liftEdition := liftVersion.value.replaceAllLiterally("-SNAPSHOT", "").split('.').take(2).mkString(".")
 
 moduleName := name.value + "_" + liftEdition.value
 
-scalaVersion := "2.12.1"
-
-crossScalaVersions := Seq("2.12.1", "2.11.8")
+crossScalaVersions := Seq("2.12.2", "2.11.11")
+scalaVersion := crossScalaVersions.value.head
 
 resolvers += "CB Central Mirror" at "http://repo.cloudbees.com/content/groups/public"
 
@@ -25,7 +25,7 @@ libraryDependencies += "net.liftweb" %% "lift-mapper" % liftVersion.value % "pro
 
 libraryDependencies += "org.apache.sanselan" % "sanselan" % "0.97-incubator"
 
-libraryDependencies += "org.specs2" %% "specs2-core" % "3.8.6" % "test"
+libraryDependencies += "org.specs2" %% "specs2-core" % "3.9.1" % "test"
 
 
 publishTo := (version.value.endsWith("SNAPSHOT") match {
