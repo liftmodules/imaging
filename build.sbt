@@ -7,7 +7,7 @@ organization := "net.liftmodules"
 
 version := "1.6.0-SNAPSHOT"
 
-liftVersion := "3.1.0"
+liftVersion := "3.2.0"
 
 liftEdition := liftVersion.value.replaceAllLiterally("-SNAPSHOT", "").split('.').take(2).mkString(".")
 
